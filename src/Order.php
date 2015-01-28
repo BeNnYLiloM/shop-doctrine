@@ -1,16 +1,19 @@
 <?php
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @Entity @Table(name="orders")
  */
 class Order
 {
     /**
-     * @Id @Column(type="integer") @GeneratedValue
+     * @Id @Column(name="order_id", type="integer") @GeneratedValue
      */
-    protected $id;
+    protected $order_id;
     /**
      * @Column(type="string")
+     * @ManyToOne(targetEntity="Product", inversedBy="product_id")
      */
     protected $orderProducts;
     /**
@@ -18,9 +21,14 @@ class Order
      */
     protected $orderAmount;
 
+    public function __construct()
+    {
+        $this->orderProducts = new ArrayCollection();
+    }
+
     public function getId()
     {
-        return $this->id;
+        return $this->order_id;
     }
 
     public function getOrderProducts()
@@ -28,8 +36,18 @@ class Order
         return $this->orderProducts;
     }
 
+    public function setOrderProducts($orderProductsId)
+    {
+        $this->orderProducts = $orderProductsId;
+    }
+
     public function getOrderAmount()
     {
         return $this->orderAmount;
+    }
+
+    public function setOrderAmount($orderProductsPrice)
+    {
+        $this->orderAmount = $orderProductsPrice;
     }
 }

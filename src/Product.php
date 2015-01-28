@@ -1,14 +1,17 @@
 <?php
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @Entity @Table(name="products")
  */
 class Product
 {
     /**
-     * @Id @Column(type="integer") @GeneratedValue
+     * @Id @Column(name="product_id", type="integer") @GeneratedValue
+     * @OneToMany(targetEntity="Order", mappedBy="order_id")
      */
-    protected $id;
+    protected $product_id;
     /**
      * @Column(type="string")
      */
@@ -18,9 +21,14 @@ class Product
      */
     protected $price;
 
+    public function _construct()
+    {
+        $this->product_id = new ArrayCollection();
+    }
+
     public function getId()
     {
-        return $this->id;
+        return $this->product_id;
     }
 
     public function getName()
