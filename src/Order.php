@@ -1,53 +1,127 @@
 <?php
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 /**
- * @Entity @Table(name="orders")
+ * @Entity
+ * @Table(name="orders")
  */
 class Order
 {
     /**
-     * @Id @Column(name="order_id", type="integer") @GeneratedValue
+     * @Id
+     * @Column(name="id", type="integer")
+     * @GeneratedValue
      */
-    protected $order_id;
+    protected $id;
+
+    /**
+     * @Column(type="integer")
+     */
+    protected $idProduct;
+
+    /**
+     * @ManyToMany(targetEntity="Product")
+     */
+    protected $product;
+
     /**
      * @Column(type="string")
-     * @ManyToOne(targetEntity="Product", inversedBy="product_id")
      */
-    protected $orderProducts;
+    protected $amount;
     /**
-     * @Column(type="string")
+     * Constructor
      */
-    protected $orderAmount;
 
     public function __construct()
     {
-        $this->orderProducts = new ArrayCollection();
+        $this->product = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
     public function getId()
     {
-        return $this->order_id;
+        return $this->id;
     }
 
-    public function getOrderProducts()
+    /**
+     * Set idProduct
+     *
+     * @param integer $idProduct
+     * @return Order
+     */
+    public function setIdProduct($idProduct)
     {
-        return $this->orderProducts;
+        $this->idProduct = $idProduct;
+
+        return $this;
     }
 
-    public function setOrderProducts($orderProductsId)
+    /**
+     * Get idProduct
+     *
+     * @return integer 
+     */
+    public function getIdProduct()
     {
-        $this->orderProducts = $orderProductsId;
+        return $this->idProduct;
     }
 
-    public function getOrderAmount()
+    /**
+     * Set amount
+     *
+     * @param string $amount
+     * @return Order
+     */
+    public function setAmount($amount)
     {
-        return $this->orderAmount;
+        $this->amount = $amount;
+
+        return $this;
     }
 
-    public function setOrderAmount($orderProductsPrice)
+    /**
+     * Get amount
+     *
+     * @return string 
+     */
+    public function getAmount()
     {
-        $this->orderAmount = $orderProductsPrice;
+        return $this->amount;
+    }
+
+    /**
+     * Add product
+     *
+     * @param \Product $product
+     * @return Order
+     */
+    public function addProduct(\Product $product)
+    {
+        $this->product[] = $product;
+
+        return $this;
+    }
+
+    /**
+     * Remove product
+     *
+     * @param \Product $product
+     */
+    public function removeProduct(\Product $product)
+    {
+        $this->product->removeElement($product);
+    }
+
+    /**
+     * Get product
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProduct()
+    {
+        return $this->product;
     }
 }

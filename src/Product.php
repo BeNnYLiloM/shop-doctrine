@@ -1,53 +1,110 @@
 <?php
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 /**
- * @Entity @Table(name="products")
+ * @Entity
+ * @Table(name="products")
  */
 class Product
 {
     /**
-     * @Id @Column(name="product_id", type="integer") @GeneratedValue
-     * @OneToMany(targetEntity="Order", mappedBy="order_id")
+     * @Id
+     * @Column(name="id", type="integer")
+     * @GeneratedValue
      */
-    protected $product_id;
+    protected $id;
+
     /**
      * @Column(type="string")
      */
     protected $name;
+
     /**
      * @Column(type="integer")
      */
     protected $price;
 
-    public function _construct()
-    {
-        $this->product_id = new ArrayCollection();
-    }
+    /**
+     * @Column(type="integer")
+     */
+    protected $amount;
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
 
     public function getId()
     {
-        return $this->product_id;
+        return $this->id;
     }
 
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Product
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
     public function getName()
     {
         return $this->name;
     }
 
-    public function setName($name)
+    /**
+     * Set price
+     *
+     * @param integer $price
+     * @return Product
+     */
+    public function setPrice($price)
     {
-        $this->name = $name;
+        $this->price = $price;
+
+        return $this;
     }
 
+    /**
+     * Get price
+     *
+     * @return integer 
+     */
     public function getPrice()
     {
         return $this->price;
     }
 
-    public function setPrice($price)
+    /**
+     * Set amount
+     *
+     * @param integer $amount
+     * @return Product
+     */
+    public function setAmount($amount)
     {
-        $this->price = $price;
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+    /**
+     * Get amount
+     *
+     * @return integer 
+     */
+    public function getAmount()
+    {
+        return $this->amount;
     }
 }
