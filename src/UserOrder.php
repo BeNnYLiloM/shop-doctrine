@@ -3,7 +3,6 @@
 /**
  * @Entity
  * @Table(name="userOrder")
- * @HasLifecycleCallbacks
  */
 class UserOrder
 {
@@ -124,15 +123,6 @@ class UserOrder
         $this->total = $total;
 
         return $this;
-    }
-
-    /**
-     * @PrePersist
-     */
-    public function doStuffOnPrePersist($total)
-    {
-        $dql = "SELECT u, t FROM UserOrder u ";
-        $this->total = $total;
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+use Doctrine\ORM\Events;
+
 require_once "main.php";
 
 //$productId = $argv[1];
@@ -15,6 +17,8 @@ require_once "main.php";
 //$entityManager->persist($order);
 //$entityManager->flush();
 
+$eventManager->addEventListener(array(Events::onFlush), new FlushListener());
+
 $userId = $argv[1];
 $orderProduct = $argv[2];
 $amount = $argv[3];
@@ -24,6 +28,7 @@ $product = $entityManager->find('Product', $orderProduct);
 
 $order = new UserOrder();
 $order->setAmount($argv[3]);
+$order->setTotal($product->getPrice());
 $order->setUserId($user);
 $order->setProduct($product);
 

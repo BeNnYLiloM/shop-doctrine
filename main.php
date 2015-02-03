@@ -2,6 +2,9 @@
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
+use Doctrine\Common\EventManager;
+use Doctrine\ORM\Events;
+use \FlushListener;
 
 require_once "vendor/autoload.php";
 
@@ -15,7 +18,7 @@ $dbParams = array(
     'dbname' => 'shop-doctrine',
 );
 
-$config = Setup::createAnnotationMetadataConfiguration($path, $isDevMode);
-$entityManager = EntityManager::create($dbParams, $config);
+$eventManager = new EventManager();
 
-$evm = new \Doctrine\Common\EventManager();
+$config = Setup::createAnnotationMetadataConfiguration($path, $isDevMode);
+$entityManager = EntityManager::create($dbParams, $config, $eventManager);

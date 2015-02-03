@@ -19,7 +19,7 @@ class Product
     protected $name;
 
     /**
-     * @Column(type="integer")
+     * @Column(type="decimal", scale=2)
      */
     protected $price;
 
