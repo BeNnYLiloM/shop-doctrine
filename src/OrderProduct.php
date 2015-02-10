@@ -14,22 +14,19 @@ class OrderProduct
     protected $id;
 
     /**
-     * @OneToMany(targetEntity="Order", mappedBy="id")
+     * @ManyToOne(targetEntity="Order")
      */
-    protected $orderId;
+    protected $order;
 
     /**
      * @ManyToOne(targetEntity="Product")
      */
-    protected $productId;
+    protected $product;
 
     /**
-     * Constructor
+     * @Column(type="integer")
      */
-    public function __construct()
-    {
-        $this->orderId = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+    protected $amount;
 
     /**
      * Get id
@@ -42,58 +39,71 @@ class OrderProduct
     }
 
     /**
-     * Add orderId
+     * Set order
      *
-     * @param \Order $orderId
+     * @param \Order $order
      * @return OrderProduct
      */
-    public function addOrderId(\Order $orderId)
+    public function setOrder(\Order $order = null)
     {
-        $this->orderId[] = $orderId;
+        $this->order = $order;
 
         return $this;
     }
 
     /**
-     * Remove orderId
+     * Get order
      *
-     * @param \Order $orderId
+     * @return \Order 
      */
-    public function removeOrderId(\Order $orderId)
+    public function getOrder()
     {
-        $this->orderId->removeElement($orderId);
+        return $this->order;
     }
 
     /**
-     * Get orderId
+     * Set product
      *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getOrderId()
-    {
-        return $this->orderId;
-    }
-
-    /**
-     * Set productId
-     *
-     * @param \Product $productId
+     * @param \Product $product
      * @return OrderProduct
      */
-    public function setProductId(\Product $productId = null)
+    public function setProduct(\Product $product = null)
     {
-        $this->productId = $productId;
+        $this->product = $product;
 
         return $this;
     }
 
     /**
-     * Get productId
+     * Get product
      *
      * @return \Product 
      */
-    public function getProductId()
+    public function getProduct()
     {
-        return $this->productId;
+        return $this->product;
+    }
+
+    /**
+     * Set amount
+     *
+     * @param integer $amount
+     * @return OrderProduct
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+    /**
+     * Get amount
+     *
+     * @return integer 
+     */
+    public function getAmount()
+    {
+        return $this->amount;
     }
 }

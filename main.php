@@ -4,9 +4,9 @@ use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\EventManager;
 use Doctrine\ORM\Events;
-use \FlushListener;
 
 require_once "vendor/autoload.php";
+require_once "listeners/FlushListener.php";
 
 $path = array(__DIR__."/src");
 $isDevMode = true;
@@ -19,6 +19,7 @@ $dbParams = array(
 );
 
 $eventManager = new EventManager();
+$eventManager->addEventListener(array(Events::onFlush), new FlushListener());
 
 $config = Setup::createAnnotationMetadataConfiguration($path, $isDevMode);
 $entityManager = EntityManager::create($dbParams, $config, $eventManager);

@@ -2,7 +2,7 @@
 
 /**
  * @Entity
- * @Table(name="products")
+ * @Table(name="product")
  */
 class Product
 {
