@@ -17,8 +17,6 @@ require_once "main.php";
 //$entityManager->persist($order);
 //$entityManager->flush();
 
-$eventManager->addEventListener(array(Events::onFlush), new FlushListener());
-
 $userId = $argv[1];
 $orderProduct = $argv[2];
 $amount = $argv[3];

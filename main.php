@@ -1,14 +1,23 @@
 <?php
 
+require_once "vendor/autoload.php";
+
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
-use Doctrine\Common\EventManager;
 use Doctrine\ORM\Events;
+use Doctrine\Common\EventManager;
+use Doctrine\Common\ClassLoader;
+use Symfony\Component\Console\Application;
 
-require_once "vendor/autoload.php";
-require_once "listeners/FlushListener.php";
+$listenerLoader = new ClassLoader('Listeners', 'src');
+$listenerLoader->register();
+$listenerLoader->loadClass('Listeners\FlushListener');
 
-$path = array(__DIR__."/src");
+$consoleCommandLoader = new ClassLoader('ConsoleCommand', 'src');
+$consoleCommandLoader->register();
+$consoleCommandLoader->loadClass('ConsoleCommand\ConsoleCommand');
+
+$path = array(__DIR__.'/src/Entities');
 $isDevMode = true;
 
 $dbParams = array(
@@ -23,3 +32,7 @@ $eventManager->addEventListener(array(Events::onFlush), new FlushListener());
 
 $config = Setup::createAnnotationMetadataConfiguration($path, $isDevMode);
 $entityManager = EntityManager::create($dbParams, $config, $eventManager);
+
+$application = new Application();
+$application->add(new ConsoleCommand());
+$application->run();
