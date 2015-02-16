@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @Entity
+ * @Entity(repositoryClass="OrderProductRepository")
  * @Table(name="orderProduct")
  */
 class OrderProduct
@@ -26,7 +26,7 @@ class OrderProduct
     /**
      * @Column(type="integer")
      */
-    protected $amount;
+    protected $count;
 
     /**
      * Get id
@@ -90,9 +90,9 @@ class OrderProduct
      * @param integer $amount
      * @return OrderProduct
      */
-    public function setAmount($amount)
+    public function setCount($count)
     {
-        $this->amount = $amount;
+        $this->amount = $count;
 
         return $this;
     }
@@ -102,8 +102,8 @@ class OrderProduct
      *
      * @return integer 
      */
-    public function getAmount()
+    public function getCount()
     {
-        return $this->amount;
+        return $this->count;
     }
 }

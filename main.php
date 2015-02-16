@@ -17,6 +17,11 @@ $consoleCommandLoader = new ClassLoader('ConsoleCommand', 'src');
 $consoleCommandLoader->register();
 $consoleCommandLoader->loadClass('ConsoleCommand\ConsoleCommand');
 
+$repositoryLoader = new ClassLoader('Repositories', 'src');
+$repositoryLoader->register();
+$repositoryLoader->loadClass('Repositories\OrderRepository');
+$repositoryLoader->loadClass('Repositories\OrderProductRepository');
+
 $path = array(__DIR__.'/src/Entities');
 $isDevMode = true;
 
@@ -35,4 +40,3 @@ $entityManager = EntityManager::create($dbParams, $config, $eventManager);
 
 $application = new Application();
 $application->add(new ConsoleCommand());
-$application->run();

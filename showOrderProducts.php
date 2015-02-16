@@ -2,18 +2,25 @@
 
 require_once 'main.php';
 
-$orderId = $argv[1];
+if(count($argv) == 1) {
+    $cart = $entityManager->getRepository('OrderProduct')->getListAllProducts();
 
-if($cart = $entityManager->find('Order', $orderId)) {
-    $dql = "SELECT o FROM OrderProduct o WHERE o.order = " . $orderId;
-    $query = $entityManager->createQuery($dql);
-    $result = $query->getResult();
-
-    echo "Your list of products:\n";
-    foreach ($result as $orderProduct) {
-        echo $orderProduct->getId() . " - " . $orderProduct->getProduct()->getName() . "\n";
+    foreach ($cart as $entity) {
+        echo 'ID table entry '.$entity->getId().":
+  ID of order: ".$entity->getOrder()->getId()."
+  Product name: ".$entity->getProduct()->getName()."
+  Amount product: ".$entity->getProduct()->getPrice()."
+  Count: ".$entity->getCount()."\n\n";
     }
-} else {
-    echo "ID does not exist.\n";
-    die;
+} elseif(count($argv) == 2) {
+    $orderId = $argv[1];
+
+    $cart = $entityManager->getRepository('OrderProduct')->getListProductByOrderId($orderId);
+    if(!$cart) {
+        echo "ID does not exist.\n";
+        die;
+    }
+    foreach ($cart as $entity) {
+        echo $entity->getId().' - '.$entity->getProduct()->getName().'. Amount: '.$entity->getProduct()->getPrice()."\n";
+    }
 }

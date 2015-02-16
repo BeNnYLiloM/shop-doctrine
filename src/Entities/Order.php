@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @Entity
+ * @Entity(repositoryClass="OrderRepository")
  * @Table(name="check_order")
  */
 class Order
