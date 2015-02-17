@@ -6,8 +6,8 @@ class OrderRepository extends EntityRepository
 {
     public function getOneOrder($id)
     {
-        $dql = "SELECT o FROM Order o WHERE o.id = $id";
-        $query = $this->getEntityManager()->createQuery($dql);
+        $dql = "SELECT o FROM Order o WHERE o.id = :id";
+        $query = $this->getEntityManager()->createQuery($dql)->setParameter('id', $id);
 
         return $query->getResult();
     }
