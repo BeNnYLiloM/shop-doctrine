@@ -10,7 +10,7 @@ if(count($argv) == 4) {
         $cart = new OrderProduct();
         $cart->setOrder($order);
         $cart->setProduct($product);
-        $cart->setAmount($argv[3]);
+        $cart->setCount($argv[3]);
 
         $entityManager->persist($cart);
         $entityManager->flush();
@@ -20,6 +20,7 @@ if(count($argv) == 4) {
     }
 } elseif(count($argv) == 3) {
     $newOrder = new Order();
+    $newOrder->setCreated(new DateTime('now'));
 
     $entityManager->persist($newOrder);
     $entityManager->flush();
@@ -31,7 +32,7 @@ if(count($argv) == 4) {
     $cart = new OrderProduct();
     $cart->setOrder($newOrder);
     $cart->setProduct($product);
-    $cart->setAmount($argv[2]);
+    $cart->setCount($argv[2]);
 
     $entityManager->persist($cart);
     $entityManager->flush();

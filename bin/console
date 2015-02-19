@@ -1,6 +1,7 @@
+#!/usr/bin/php5
 <?php
 
-require_once "vendor/autoload.php";
+require_once __DIR__.'/../vendor/autoload.php';
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
@@ -15,7 +16,13 @@ $listenerLoader->loadClass('Listener\FlushListener');
 
 $consoleCommandLoader = new ClassLoader('ConsoleCommand', 'src');
 $consoleCommandLoader->register();
-$consoleCommandLoader->loadClass('ConsoleCommand\ConsoleCommand');
+$consoleCommandLoader->loadClass('ConsoleCommand\AddProductCommand');
+$consoleCommandLoader->loadClass('ConsoleCommand\ShowOrderProductCommand');
+$consoleCommandLoader->loadClass('ConsoleCommand\AddOrderProductCommand');
+$consoleCommandLoader->loadClass('ConsoleCommand\DelOrderProductCommand');
+$consoleCommandLoader->loadClass('ConsoleCommand\ListProductCommand');
+$consoleCommandLoader->loadClass('ConsoleCommand\ShowOrderCommand');
+$consoleCommandLoader->loadClass('ConsoleCommand\ProductCommand');
 
 $repositoryLoader = new ClassLoader('Repository', 'src');
 $repositoryLoader->register();
@@ -37,6 +44,14 @@ $eventManager->addEventListener(array(Events::onFlush), new FlushListener());
 
 $config = Setup::createAnnotationMetadataConfiguration($path, $isDevMode);
 $entityManager = EntityManager::create($dbParams, $config, $eventManager);
+global $entityManager;
 
 $application = new Application();
-$application->add(new ConsoleCommand());
+$application->add(new AddProductCommand());
+$application->add(new ShowOrderProductCommand());
+$application->add(new AddOrderProductCommand());
+$application->add(new DelOrderProductCommand());
+$application->add(new ListProductCommand());
+$application->add(new ShowOrderCommand());
+$application->add(new ProductCommand());
+$application->run();
