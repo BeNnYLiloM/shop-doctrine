@@ -22,7 +22,7 @@ $consoleCommandLoader->loadClass('ConsoleCommand\AddOrderProductCommand');
 $consoleCommandLoader->loadClass('ConsoleCommand\DelOrderProductCommand');
 $consoleCommandLoader->loadClass('ConsoleCommand\ListProductCommand');
 $consoleCommandLoader->loadClass('ConsoleCommand\ShowOrderCommand');
-$consoleCommandLoader->loadClass('ConsoleCommand\ProductCommand');
+$consoleCommandLoader->loadClass('ConsoleCommand\ExpensiveProductCommand');
 
 $repositoryLoader = new ClassLoader('Repository', 'src');
 $repositoryLoader->register();
@@ -53,5 +53,5 @@ $application->add(new AddOrderProductCommand());
 $application->add(new DelOrderProductCommand());
 $application->add(new ListProductCommand());
 $application->add(new ShowOrderCommand());
-$application->add(new ProductCommand());
+$application->add(new ExpensiveProductCommand());
 $application->run();

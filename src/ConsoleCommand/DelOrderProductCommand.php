@@ -3,7 +3,6 @@
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class DelOrderProductCommand extends Command
 {
@@ -19,7 +18,7 @@ class DelOrderProductCommand extends Command
         ;
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input)
     {
         if($input->getArgument('order-product-id')){
             $orderProduct = $GLOBALS['entityManager']->find('OrderProduct', $input->getArgument('order-product-id'));

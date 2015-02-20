@@ -3,7 +3,6 @@
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class AddOrderProductCommand extends Command
 {
@@ -29,7 +28,7 @@ class AddOrderProductCommand extends Command
         ;
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input)
     {
         if($input->getArgument('order-id')){
             $order = $GLOBALS['entityManager']->find('Order', $input->getArgument('order-id'));

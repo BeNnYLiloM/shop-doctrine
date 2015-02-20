@@ -3,7 +3,6 @@
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class ShowOrderProductCommand extends Command
 {
@@ -19,7 +18,7 @@ class ShowOrderProductCommand extends Command
         ;
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input)
     {
         if(!$input->getArgument('id-order')){
             $cart = $GLOBALS['entityManager']->getRepository('OrderProduct')->getListAllProducts();

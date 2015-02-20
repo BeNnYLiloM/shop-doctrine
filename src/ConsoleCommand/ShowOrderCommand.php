@@ -3,7 +3,6 @@
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class ShowOrderCommand extends Command
 {
@@ -19,7 +18,7 @@ class ShowOrderCommand extends Command
         ;
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input)
     {
         if($input->getArgument('order-id')){
             $orderId = $input->getArgument('order-id');
