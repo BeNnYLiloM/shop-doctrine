@@ -1,8 +1,6 @@
 <?php
 
-use Symfony\Component\Console\Command\Command;
-
-class ListProductCommand extends Command
+class ListProductCommand extends \ConsoleCommand\CommandWithEntityManager
 {
     protected function configure()
     {
@@ -11,7 +9,7 @@ class ListProductCommand extends Command
 
     public function execute()
     {
-        $productRepository = $GLOBALS['entityManager']->getRepository('Product');
+        $productRepository = $this->em->getRepository('Product');
         $products = $productRepository->findAll();
 
         foreach($products as $product) {

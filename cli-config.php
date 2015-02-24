@@ -1,5 +1,5 @@
 <?php
 
-require_once "bin/console";
+//require_once "bin/console";
 
-return \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($entityManager);
+//return \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($entityManager);

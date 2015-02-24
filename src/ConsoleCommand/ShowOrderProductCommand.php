@@ -1,10 +1,9 @@
 <?php
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class ShowOrderProductCommand extends Command
+class ShowOrderProductCommand extends \ConsoleCommand\CommandWithEntityManager
 {
     protected function configure()
     {
@@ -21,7 +20,7 @@ class ShowOrderProductCommand extends Command
     public function execute(InputInterface $input)
     {
         if(!$input->getArgument('id-order')){
-            $cart = $GLOBALS['entityManager']->getRepository('OrderProduct')->getListAllProducts();
+            $cart = $this->em->getRepository('OrderProduct')->getListAllProducts();
 
             foreach ($cart as $entity) {
                 echo "
@@ -34,7 +33,7 @@ ID table entry " . $entity->getId() . ":
         } else {
             $orderId = $input->getArgument('id-order');
 
-            $cart = $GLOBALS['entityManager']->getRepository('OrderProduct')->getListProductByOrderId($orderId);
+            $cart = $this->em->getRepository('OrderProduct')->getListProductByOrderId($orderId);
             if(!$cart) {
                 echo "ID does not exist.\n";
                 die;

@@ -1,10 +1,9 @@
 <?php
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class AddProductCommand extends Command
+class AddProductCommand extends \ConsoleCommand\CommandWithEntityManager
 {
 
     protected function configure()
@@ -40,7 +39,7 @@ class AddProductCommand extends Command
         $product->setPrice($price);
         $product->setAmount($amount);
 
-        $GLOBALS['entityManager']->persist($product);
-        $GLOBALS['entityManager']->flush();
+        $this->em->persist($product);
+        $this->em->flush();
     }
 }

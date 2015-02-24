@@ -1,10 +1,10 @@
 <?php
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Output\OutputInterface;
 
-class DelOrderProductCommand extends Command
+class DelOrderProductCommand extends \ConsoleCommand\CommandWithEntityManager
 {
     protected function configure()
     {
@@ -18,15 +18,15 @@ class DelOrderProductCommand extends Command
         ;
     }
 
-    public function execute(InputInterface $input)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         if($input->getArgument('order-product-id')){
-            $orderProduct = $GLOBALS['entityManager']->find('OrderProduct', $input->getArgument('order-product-id'));
+            $orderProduct = $this->em->find('OrderProduct', $input->getArgument('order-product-id'));
             if($orderProduct){
-                $GLOBALS['entityManager']->remove($orderProduct);
-                $GLOBALS['entityManager']->flush();
+                $this->em->remove($orderProduct);
+                $this->em->flush();
             } else {
-                echo "Product with ID `".$input->getArgument('order-product-id')."` was not found in your shopping cart.\n";
+                $output->writeln('<error>Product with ID `'.$input->getArgument('order-product-id').'` was not found in your shopping cart</error>');
                 die;
             }
         }

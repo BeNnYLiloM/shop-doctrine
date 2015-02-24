@@ -9,7 +9,7 @@ class ExpensiveProductCommand extends \ConsoleCommand\CommandWithEntityManager
     protected function configure()
     {
         $this
-            ->setName('Product:expensive')
+            ->setName('Product:cheap')
             ->addArgument(
                 'date-from',
                 InputArgument::REQUIRED,

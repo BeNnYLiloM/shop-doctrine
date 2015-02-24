@@ -16,6 +16,7 @@ $listenerLoader->loadClass('Listener\FlushListener');
 
 $consoleCommandLoader = new ClassLoader('ConsoleCommand', 'src');
 $consoleCommandLoader->register();
+$consoleCommandLoader->loadClass('ConsoleCommand\CommandWithEntityManager');
 $consoleCommandLoader->loadClass('ConsoleCommand\AddProductCommand');
 $consoleCommandLoader->loadClass('ConsoleCommand\ShowOrderProductCommand');
 $consoleCommandLoader->loadClass('ConsoleCommand\AddOrderProductCommand');
@@ -29,7 +30,7 @@ $repositoryLoader->register();
 $repositoryLoader->loadClass('Repository\OrderRepository');
 $repositoryLoader->loadClass('Repository\OrderProductRepository');
 
-$path = array(__DIR__.'/src/Entity');
+$path = array(__DIR__.'/../src/Entity');
 $isDevMode = true;
 
 $dbParams = array(
@@ -44,14 +45,13 @@ $eventManager->addEventListener(array(Events::onFlush), new FlushListener());
 
 $config = Setup::createAnnotationMetadataConfiguration($path, $isDevMode);
 $entityManager = EntityManager::create($dbParams, $config, $eventManager);
-global $entityManager;
 
 $application = new Application();
-$application->add(new AddProductCommand());
-$application->add(new ShowOrderProductCommand());
-$application->add(new AddOrderProductCommand());
-$application->add(new DelOrderProductCommand());
-$application->add(new ListProductCommand());
-$application->add(new ShowOrderCommand());
-$application->add(new ExpensiveProductCommand());
+$application->add(new AddProductCommand($entityManager));
+$application->add(new ShowOrderProductCommand($entityManager));
+$application->add(new AddOrderProductCommand($entityManager));
+$application->add(new DelOrderProductCommand($entityManager));
+$application->add(new ListProductCommand($entityManager));
+$application->add(new ShowOrderCommand($entityManager));
+$application->add(new ExpensiveProductCommand($entityManager));
 $application->run();

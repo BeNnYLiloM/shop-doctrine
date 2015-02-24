@@ -1,10 +1,9 @@
 <?php
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class ShowOrderCommand extends Command
+class ShowOrderCommand extends \ConsoleCommand\CommandWithEntityManager
 {
     protected function configure()
     {
@@ -23,7 +22,7 @@ class ShowOrderCommand extends Command
         if($input->getArgument('order-id')){
             $orderId = $input->getArgument('order-id');
 
-            $order = $GLOBALS['entityManager']->getRepository('Order')->getOneOrder($orderId);
+            $order = $this->em->getRepository('Order')->getOneOrder($orderId);
             if(!$order){
                 echo "ID of the order is not found!\n";
                 die;
@@ -32,7 +31,7 @@ class ShowOrderCommand extends Command
                 echo "ID of your order: ".$entity->getId().". Amount of your order: ".$entity->getTotal()."\n";
             }
         } else {
-            $orders = $GLOBALS['entityManager']->getRepository('Order')->getAllOrders();
+            $orders = $this->em->getRepository('Order')->getAllOrders();
             foreach($orders as $entity) {
                 echo 'ID of order: '.$entity->getId().'. Amount of order: '.$entity->getTotal()."\n";
             }
