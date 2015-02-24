@@ -4,7 +4,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ExpensiveProductCommand extends \ConsoleCommand\CommandWithEntityManager
+class CheapProductCommand extends \ConsoleCommand\CommandWithEntityManager
 {
     protected function configure()
     {
@@ -34,13 +34,13 @@ class ExpensiveProductCommand extends \ConsoleCommand\CommandWithEntityManager
                 ->join('op.product', 'p')
                 ->where("o.created > '".date('Y-m-d', strtotime($input->getArgument('date-from')))." 00:00:00'")
                 ->andWhere("o.created < '".date('Y-m-d', strtotime($input->getArgument('date-to')))." 23:59:59'")
-                ->orderBy('p.price', 'desc')
+                ->orderBy('p.price', 'asc')
                 ->setMaxResults(10);
 
             $query = $qb->getQuery();
             $result = $query->getResult();
 
-            $output->writeln('<info>List expensive to product:</info>');
+            $output->writeln('<info>List cheap to product:</info>');
             foreach ($result as $product) {
                 $output->writeln('<info>Name: '.$product->getProduct()->getName().'. Price: '.$product->getProduct()->getPrice().'</info>');
             }
