@@ -25,27 +25,23 @@ class ExpensiveProductCommand extends \ConsoleCommand\CommandWithEntityManager
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        if($input->getArgument('date-from') && $input->getArgument('date-to')){
-            $qb = $this->em->createQueryBuilder();
+        $qb = $this->em->createQueryBuilder();
 
-            $qb->select('op', 'o', 'p')
-                ->from('OrderProduct', 'op')
-                ->join('op.order', 'o')
-                ->join('op.product', 'p')
-                ->where("o.created > '".date('Y-m-d', strtotime($input->getArgument('date-from')))." 00:00:00'")
-                ->andWhere("o.created < '".date('Y-m-d', strtotime($input->getArgument('date-to')))." 23:59:59'")
-                ->orderBy('p.price', 'desc')
-                ->setMaxResults(10);
+        $qb->select('op', 'o', 'p')
+            ->from('OrderProduct', 'op')
+            ->join('op.order', 'o')
+            ->join('op.product', 'p')
+            ->where("o.created > '".date('Y-m-d', strtotime($input->getArgument('date-from')))." 00:00:00'")
+            ->andWhere("o.created < '".date('Y-m-d', strtotime($input->getArgument('date-to')))." 23:59:59'")
+            ->orderBy('p.price', 'desc')
+            ->setMaxResults(10);
 
-            $query = $qb->getQuery();
-            $result = $query->getResult();
+        $query = $qb->getQuery();
+        $result = $query->getResult();
 
-            $output->writeln('<info>List expensive to product:</info>');
-            foreach ($result as $product) {
-                $output->writeln('<info>Name: '.$product->getProduct()->getName().'. Price: '.$product->getProduct()->getPrice().'</info>');
-            }
-        } else {
-
+        $output->writeln('<info>List expensive to product:</info>');
+        foreach ($result as $product) {
+            $output->writeln('<info>Name: '.$product->getProduct()->getName().'. Price: '.$product->getProduct()->getPrice().'</info>');
         }
     }
 }

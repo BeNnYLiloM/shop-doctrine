@@ -25,6 +25,7 @@ $consoleCommandLoader->loadClass('ConsoleCommand\ListProductCommand');
 $consoleCommandLoader->loadClass('ConsoleCommand\ShowOrderCommand');
 $consoleCommandLoader->loadClass('ConsoleCommand\ExpensiveProductCommand');
 $consoleCommandLoader->loadClass('ConsoleCommand\CheapProductCommand');
+$consoleCommandLoader->loadClass('ConsoleCommand\BigOrderCommand');
 
 $repositoryLoader = new ClassLoader('Repository', 'src');
 $repositoryLoader->register();
@@ -56,4 +57,5 @@ $application->add(new ListProductCommand($entityManager));
 $application->add(new ShowOrderCommand($entityManager));
 $application->add(new ExpensiveProductCommand($entityManager));
 $application->add(new CheapProductCommand($entityManager));
+$application->add(new BigOrderCommand($entityManager));
 $application->run();
