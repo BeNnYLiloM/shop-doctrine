@@ -27,10 +27,9 @@ class BigOrderCommand extends \ConsoleCommand\CommandWithEntityManager
     {
         $qb = $this->em->createQueryBuilder();
 
-        $qb->select('op', 'o', 'p', 'count(p)')
+        $qb->select('op', 'o', 'count(op)')
             ->from('OrderProduct', 'op')
             ->join('op.order', 'o')
-            ->join('op.product', 'p')
             ->where("o.created > :dateFrom")
             ->andWhere("o.created < :dateTo")
             ->setParameter('dateFrom', date('Y-m-d', strtotime($input->getArgument('date-from'))).' 00:00:00')
