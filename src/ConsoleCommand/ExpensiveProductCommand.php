@@ -2,6 +2,7 @@
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ExpensiveProductCommand extends \ConsoleCommand\CommandWithEntityManager
@@ -20,28 +21,60 @@ class ExpensiveProductCommand extends \ConsoleCommand\CommandWithEntityManager
                 InputArgument::REQUIRED,
                 'The date to which you want to display data.'
             )
+            ->addOption(
+                'dql',
+                null,
+                InputOption::VALUE_NONE,
+                'DQL query'
+            )
         ;
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $qb = $this->em->createQueryBuilder();
+        if($input->getOption('dql')){
+            $dql = "SELECT op, o, p FROM OrderProduct op JOIN op.order o JOIN op.product p WHERE o.created > :dateFrom AND o.created < :dateTo ORDER BY p.price DESC";
 
-        $qb->select('op', 'o', 'p')
-            ->from('OrderProduct', 'op')
-            ->join('op.order', 'o')
-            ->join('op.product', 'p')
-            ->where("o.created > '".date('Y-m-d', strtotime($input->getArgument('date-from')))." 00:00:00'")
-            ->andWhere("o.created < '".date('Y-m-d', strtotime($input->getArgument('date-to')))." 23:59:59'")
-            ->orderBy('p.price', 'desc')
-            ->setMaxResults(10);
+            $query = $this->em->createQuery($dql)->setParameter('dateFrom', date('Y-m-d', strtotime($input->getArgument('date-from'))).' 00:00:00')
+                                                 ->setParameter('dateTo', date('Y-m-d', strtotime($input->getArgument('date-to'))).' 23:59:59')
+                                                 ->setMaxResults(10);
+            $result = $query->getResult();
 
-        $query = $qb->getQuery();
-        $result = $query->getResult();
+            $output->writeln('<info>List expensive to product:</info>');
+            $nameProduct = '';
+            foreach ($result as $product) {
+                if($nameProduct == $product->getProduct()->getName()){
+                    continue;
+                }
+                $nameProduct = $product->getProduct()->getName();
+                $output->writeln('<info>Name: '.$product->getProduct()->getName().'. Price: '.$product->getProduct()->getPrice().'</info>');
+            }
+        } else {
+            $qb = $this->em->createQueryBuilder();
 
-        $output->writeln('<info>List expensive to product:</info>');
-        foreach ($result as $product) {
-            $output->writeln('<info>Name: '.$product->getProduct()->getName().'. Price: '.$product->getProduct()->getPrice().'</info>');
+            $qb->select('op', 'o', 'p')
+                ->from('OrderProduct', 'op')
+                ->join('op.order', 'o')
+                ->join('op.product', 'p')
+                ->where('o.created > :dateFrom')
+                ->andWhere('o.created < :dateTo')
+                ->setParameter('dateFrom', date('Y-m-d', strtotime($input->getArgument('date-from'))).' 00:00:00')
+                ->setParameter('dateTo', date('Y-m-d', strtotime($input->getArgument('date-to'))).' 23:59:59')
+                ->orderBy('p.price', 'desc')
+                ->setMaxResults(10);
+
+            $query = $qb->getQuery();
+            $result = $query->getResult();
+
+            $output->writeln('<info>List expensive to product:</info>');
+            $nameProduct = '';
+            foreach ($result as $product) {
+                if($nameProduct == $product->getProduct()->getName()){
+                    continue;
+                }
+                $nameProduct = $product->getProduct()->getName();
+                $output->writeln('<info>Name: '.$product->getProduct()->getName().'. Price: '.$product->getProduct()->getPrice().'</info>');
+            }
         }
     }
 }
